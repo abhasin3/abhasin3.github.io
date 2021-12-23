@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+	<title>Anthony Bhasin</title>
+</head>
+<body>
+	<!-- Navbar -->
+	<!--<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<div class="container-fluid">
+
+		<a class="navbar-brand btn btn-dark" data-bs-toggle="collapse" href="#contact" role="button">Anthony Bhasin</a>
+
+		<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+		<li class="nav-item">
+			<a class="nav-link active" href="#">Projects</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="resume.html">Resume</a>
+		</li>
+		</ul>
+
+	</div>
+	</nav>
+	<div class="container-fluid">
+	<div class="row collapse text-dark small text-center" id="contact">
+		<div class="col-4">
+			anthonybhasin@gmail.com
+		</div>
+		<div class="col-4">
+			/u/anthonyb
+		</div>
+		<div class="col-4">
+			(516) 851-0373
+		</div>
+	</div>
+	</div>-->
+
+	<style>
+		body {
+			background-color: #E1E3E4;
+			font-family: Courier New;
+		}
+		.postHeader {
+			color: #E1E3E4;
+			background: #2E3133;
+		}
+		.postBody {
+			color: #777777;
+		}
+		@media (max-width: 480px) {
+			.leftRightSpacer {
+				margin-left: 3%;
+				margin-right: 3%;
+			}
+		}
+		@media (min-width: 481px) {
+			.leftRightSpacer { 
+				margin-left: 15%;
+				margin-right: 15%;
+			}
+		}
+		.contactInfoSpacer {
+			margin-left: 30%;
+			margin-right: 30%;
+		}
+		.myHeaderLink:hover {
+			color: #FF6666;
+		}
+		.myLink {
+			color: #2BADD9;
+		}
+		.myLink:hover {
+			color: #FF6666;
+		}
+	</style>
+
+	<div class="container-fluid">
+	<div class="leftRightSpacer">
+	<div class="row">
+		<div class="col text-center">
+			<h6 class="display-6 fw-bold pt-5 pb-0 mb-0">Anthony Bhasin</h6>
+			<p class="fs-3 fst-italic pt-0 mt-0 mb-5" style="color: #777777;">Coding Imagineer</p>
+		</div>
+	</div>
+	<div class="row leftRightSpacer">
+		<div class="col-sm text-center">
+			<!-- onfocus blur prevents the outline from appearing on the button when clicking -->
+			<a class="myHeaderLink btn fs-5" href="index.html" role="button" onfocus="this.blur();">Games</a>
+		</div>
+		<div class="col-sm text-center">
+			<a class="myHeaderLink btn fs-5 text-decoration-underline" href="#" role="button" onfocus="this.blur();">Projects</a>
+		</div>
+		<div class="col-sm text-center">
+			<a class="myHeaderLink btn fs-5" href="resume.pdf" role="button" onfocus="this.blur();">Resume</a>
+		</div>
+		<hr style="opacity: 1;"/>
+	</div>
+	<div class="row">
+		<div class="col postHeader h1 text-center fw-bold">
+			Projects
+		</div>
+	</div>
+
+	<div class="postBody h5">
+		<div class="row" style="color:black;">
+			<div class="col-md fw-bold">
+				Stonks
+			</div>
+			<!--<div class="col-md text-md-center">
+				N/A
+			</div>-->
+			<div class="col-md text-md-end">
+				Java
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<p>
+					What happens when you combine finance with memes?  You get Stonks - a stock tracker for the zoomer generation.  Stonks tracks the GME mania of 2021, and produces visual effects when the stock price is above your inputted average share price.
+				</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col text-center fw-bold">
+				<div class="d-flex justify-content-center ">
+					<img src="projects_images/stonks/stonks.gif" style="width:70%" alt="*missing gif*"/>
+				</div>
+			</div>
+		</div>
+		<hr/>
+		<div class="row" style="color:black;">
+			<div class="col-md fw-bold">
+				Music Visualization
+			</div>
+			<!--<div class="col-md text-md-center">
+				N/A
+			</div>-->
+			<div class="col-md text-md-end">
+				p5js and Processing
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<p>
+					Ever since I discovered <a class="myLink" href="https://joshuadavis.com/" target="_blank" rel="noopener noreferrer">Joshua Davis' generative artwork</a>, I have been fascinated by real-time, audio-responsive artwork. See some examples of my work below, and watch as the shapes and objects change <span class="text-decoration-underline fst-italic">to the beat of the music</span>!
+				</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col text-center fw-bold">
+				Billie Eilish - "everything i wanted"
+				<div class="d-flex justify-content-center ">
+					<video src="projects_images/visualizers/viz1.mp4" style="width:70%" type="video/mp4" controls>
+						<p>
+							*missing video; your browser does not support the video tag*
+						</p>
+					</video>
+				</div>
+			</div>
+		</div>
+		<hr/>
+		<div class="row" style="color:black;">
+			<div class="col-md fw-bold">
+				Color Quantizer
+			</div>
+			<div class="col-md text-md-center">
+				Algorithm: K-means
+			</div>
+			<div class="col-md text-md-end">
+				Python
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<p>
+					After being introduced to the K-means algorithm in a machine learning class, I applied it to image RGB values for color quantization.<br/>
+					<span class="fw-bold">What is K-means?</span><br/>
+					K-means is an algorithm that can group data into clusters.<br/>
+					<span class="fw-bold">What is color quantization?</span><br/>
+					Color quantization reduces the number of colors in an image while keeping the image as visually similar as possible (<a class="myLink" href="https://en.wikipedia.org/wiki/Color_quantization" target="_blank" rel="noopener noreferrer">Wikipedia</a>).
+				</p>
+			</div>
+		</div>
+		<div class="text-center fw-bold">
+			<div class="row">
+				<div class="col-md my-auto">
+					Original
+					<img src="projects_images/kmeans/orig.png" alt="*missing image*" class="img-fluid">
+				</div>
+				<div class="col-md my-auto">
+					k=2 colors
+					<img src="projects_images/kmeans/k2.png" alt="*missing image*" class="img-fluid">
+				</div>
+				<div class="col-md my-auto">
+					k=5 colors
+					<img src="projects_images/kmeans/k5.png" alt="*missing image*" class="img-fluid">
+				</div>
+				<div class="col-md my-auto">
+					k=10 colors
+					<img src="projects_images/kmeans/k10.png" alt="*missing image*" class="img-fluid">
+				</div>
+			</div>
+		</div>
+		<hr/>
+		<div class="row" style="color:black;">
+			<div class="col-md fw-bold">
+				Computer Vision
+			</div>
+			<div class="col-md text-md-center">
+				Algorithm: Hough transforms
+			</div>
+			<div class="col-md text-md-end">
+				Python
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<p>
+					During a computer vision course, I learned how to use the opencv library to detect certain features in images.
+				</p>
+			</div>
+		</div>
+		<!--<div class="row my-3">
+			<div class="col-md my-auto text-center">
+				Diagonal line detection
+				<img src="projects_images/vision/blue_lines.jpg" alt="*missing image*" class="img-fluid">
+			</div>
+			<div class="col-md my-auto text-center">
+				Vertical line detection
+				<img src="projects_images/vision/red_lines.jpg" alt="*missing image*" class="img-fluid">
+			</div>
+			<div class="col-md my-auto text-center">
+				Circle detection
+				<img src="projects_images/vision/coins.jpg" alt="*missing image*" class="img-fluid">
+			</div>
+		</div>-->
+		<div class="row">
+
+			<div class="col-md my-auto text-center">
+				<!-- Face detection -->
+				<img src="projects_images/vision/face1.jpg" alt="*missing image*" class="img-fluid">
+			</div>
+			<div class="col-md my-auto text-center">
+				<!-- Face detection -->
+				<img src="projects_images/vision/face2.jpg" alt="*missing image*" class="img-fluid">
+			</div>
+		</div>
+		<div class="row">
+			<div class="my-3">
+				I also learned how to stitch two images together to create a panorama.
+			</div>
+			<div class="col-md my-auto text-center">
+				Left image
+				<img src="projects_images/vision/pan_left.jpg" alt="*missing image*" class="img-fluid">
+			</div>
+			<div class="col-md my-auto text-center">
+				Right image
+				<img src="projects_images/vision/pan_right.jpg" alt="*missing image*" class="img-fluid">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col my-auto text-center">
+				Stitched panorama image
+				<img src="projects_images/vision/pan_result.jpg" alt="*missing image*" class="img-fluid">
+			</div>
+		</div>
+		<hr/>
+		<div class="h1">...more to come soon!</div>
+	</div>
+	<div class="row mt-5">
+		<div class="col text-center">
+			<a class="btn" href="#contactInfo" role="button" onfocus="this.blur();" data-bs-toggle="collapse"><span class="h1 fw-bold">Contact Info</span></a>
+		</div>
+	</div>
+	<div class="collapse show fs-6 text-center" id="contactInfo">
+		<div class="row">
+			<div class="col-xxl px-5 py-3 text-nowrap">
+
+				<div class="d-flex justify-content-center">
+					<a href="mailto:anthonybhasin@gmail.com" class="myLink btn fw-bold postHeader px-5 py-3" role="button" style="border-radius:15px">anthonybhasin@gmail.com</a>
+				</div>
+			</div>
+			<div class="col-sm px-5 py-3 text-nowrap">
+
+				<div class="d-flex justify-content-center">
+					<a href="tel:5168510373" class="myLink btn fw-bold postHeader px-5 py-3" role="button" style="border-radius:15px">(516)-851-0373</a>
+				</div>
+			</div>
+			<div class="col-xxl px-5 py-3 text-nowrap">
+
+				<div class="d-flex justify-content-center">
+					<!-- /u/abhasin3 -->
+					<span class="fw-bold postHeader px-5 py-3" style="border-radius:15px">Coming Soon</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+</body>
+</html>
