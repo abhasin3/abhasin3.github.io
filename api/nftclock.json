@@ -1,3 +1,3 @@
 {
-	"draw": "background(220);leth=hour();letm=minute();lets=second();translate(cx,cy);strokeWeight(10);stroke('black')circle(0,0,w);push();lethDeg=(map(h%12,0,12,0,360)+270)%360;rotate(hDeg);stroke('blue');line(0,0,0.40*cx,0);pop();push();letmDeg=(map(m,0,60,0,360)+270)%360;rotate(mDeg);stroke('green');line(0,0,0.69*cx,0);pop();push();letsDeg=(map(s,0,60,0,360)+270)%360;rotate(sDeg);stroke('red');line(0,0,0.95*cx,0);pop();"
+	"draw": "background(220); let h = hour(); let m = minute(); let s = second(); translate(cx, cy); strokeWeight(10); stroke('black'); circle(0, 0, w); push(); let hDeg = (map(h % 12, 0, 12, 0, 360) + 270) % 360; rotate(hDeg); stroke('blue'); line(0, 0, 0.40 * cx, 0); pop(); push(); let mDeg = (map(m, 0, 60, 0, 360) + 270) % 360; rotate(mDeg); stroke('green'); line(0, 0, 0.69 * cx, 0); pop(); push(); let sDeg = (map(s, 0, 60, 0, 360) + 270) % 360; rotate(sDeg); stroke('red'); line(0, 0, 0.95 * cx, 0); pop();"
 }
