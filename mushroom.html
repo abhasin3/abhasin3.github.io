@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mushroom Counter 🌲🍄</title>
+  <style>
+    :root{
+      --bg1:#0b2a1f;
+      --bg2:#163b2c;
+      --leaf:#5aa36a;
+      --accent:#c1f0cf;
+      --btnRing:#bfe3c6;
+      --text:#e6ffe6;
+      --panel:#1a2b22;
+    }
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background:
+        radial-gradient(1200px 600px at 50% 110%, #0d201a 0%, transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+    }
+    body::before, body::after{
+      content:"";
+      position:fixed; inset:0; pointer-events:none; opacity:.25;
+      background:
+        repeating-linear-gradient( to right,
+          transparent 0 120px,
+          rgba(0,0,0,.08) 120px 130px,
+          transparent 130px 260px,
+          rgba(0,0,0,.05) 260px 275px
+        );
+      mask:linear-gradient(to top, transparent, #000 30%, #000);
+    }
+    .card{
+      width:min(780px, 92vw);
+      padding:28px 28px 36px;
+      border-radius:28px;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: 0 30px 60px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08);
+      backdrop-filter: blur(6px);
+      position:relative;
+    }
+    .vines{
+      position:absolute; inset:-20px; pointer-events:none; filter: drop-shadow(0 6px 3px rgba(0,0,0,.25));
+      background:
+        radial-gradient(12px 12px at 10% 6%, var(--leaf) 20%, transparent 22%),
+        radial-gradient(12px 12px at 18% 4%, var(--leaf) 20%, transparent 22%),
+        radial-gradient(12px 12px at 81% 7%, var(--leaf) 20%, transparent 22%),
+        radial-gradient(12px 12px at 88% 9%, var(--leaf) 20%, transparent 22%);
+      mask: radial-gradient(400px 60px at 50% -30px, #000 30%, transparent 60%);
+    }
+    h1{margin:0 0 8px; text-align:center; font-weight:800; letter-spacing:.3px;}
+    .sub{opacity:.8; text-align:center; margin:0 0 22px;}
+    .counter-wrap{display:grid; place-items:center; gap:18px; margin:10px auto 24px}
+    .count{font-size:clamp(40px, 6vw, 64px); font-weight:900; text-shadow:0 2px 0 rgba(0,0,0,.35)}
+    .shroom-btn{
+      width:min(56vmin, 360px); height:min(56vmin, 360px);
+      border-radius:50%;
+      border:0; cursor:pointer; position:relative;
+      display:grid; place-items:center;
+      background: #1b2e24;
+      box-shadow: 0 12px 30px rgba(0,0,0,.45),
+        inset 0 0 0 3px rgba(255,255,255,.08),
+        0 0 0 10px var(--btnRing),
+        0 0 0 18px rgba(0,0,0,.20);
+      background-image: var(--mushroom-img);
+      background-position:center; background-repeat:no-repeat; background-size:70% 70%;
+      transition: transform .08s ease;
+      outline-offset:6px;
+    }
+    .shroom-btn:active{ transform: scale(.98); }
+    .shroom-btn .hint{ position:absolute; bottom:12px; font-weight:700; opacity:.9; background:rgba(0,0,0,.25); padding:6px 10px; border-radius:999px; }
+    .controls{display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+    .reset{
+      appearance:none; border:0; cursor:pointer;
+      padding:12px 16px; border-radius:999px; font-weight:700;
+      background:linear-gradient(180deg, #2a5d44, #204c37);
+      color:var(--text);
+      box-shadow: 0 8px 16px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.12);
+    }
+    .reset:active{ transform: translateY(1px); }
+
+    /* Leaderboard panel */
+    .leaderboard{
+      position:fixed; top:16px; right:16px; width:min(260px, 46vw);
+      background:var(--panel);
+      border-radius:16px; padding:12px 14px;
+      box-shadow: 0 12px 28px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .leaderboard h2{font-size:14px; margin:0 0 8px; letter-spacing:.4px; opacity:.9}
+    .lb-list{list-style:none; padding:0; margin:0; display:grid; gap:6px}
+    .lb-item{display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,.04); padding:6px 8px; border-radius:10px}
+    .lb-name{max-width:65%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+    .lb-score{font-weight:800}
+    .lb-empty{opacity:.7}
+
+    .glow{ position:fixed; inset:0; pointer-events:none; }
+    .glow span{ position:absolute; width:4px; height:4px; border-radius:50%; background:var(--accent); filter:blur(0.5px); opacity:.8; animation: floaty linear infinite; }
+    @keyframes floaty{ from{ transform: translateY(0)} to{ transform: translateY(-120vh)} }
+    @media (prefers-reduced-motion: reduce){.shroom-btn{ transition:none } .glow{ display:none }}
+  </style>
+</head>
+<body>
+  <!-- Leaderboard -->
+  <aside class="leaderboard" aria-live="polite" aria-label="Top forage scores">
+    <h2>🏆 Top Foragers</h2>
+    <ol id="lb" class="lb-list"></ol>
+  </aside>
+
+  <div class="card" role="region" aria-label="Mushroom counter">
+    <div class="vines" aria-hidden="true"></div>
+    <h1>🍄 Mushroom Counter</h1>
+    <p class="sub">Click the mushroom to add 1. Your total is saved for next time.</p>
+    <section class="counter-wrap">
+      <div id="count" class="count" aria-live="polite">0</div>
+      <button id="shroomBtn" class="shroom-btn" aria-label="Add one to counter">
+        <span class="hint">+1</span>
+      </button>
+    </section>
+    <div class="controls">
+      <button id="resetBtn" class="reset" aria-label="Reset counter to zero or save a high score">Reset counter</button>
+    </div>
+  </div>
+  <div class="glow" aria-hidden="true"></div>
+
+  <script>
+    // --- Storage helpers (localStorage with cookie fallback) ---
+    const storageKey = 'shroomCounter:v1';
+    const scoresKey  = 'shroomHighscores:v1';
+    const storage = {
+      get(){
+        try{ const v = localStorage.getItem(storageKey); return v? Number(v) : 0; }
+        catch(e){ const m = document.cookie.match(/(?:^|; )shroomCount=([^;]*)/); return m ? Number(decodeURIComponent(m[1])) : 0; }
+      },
+      set(n){
+        try{ localStorage.setItem(storageKey, String(n)); }
+        catch(e){ document.cookie = 'shroomCount=' + encodeURIComponent(String(n)) + ';path=/;max-age=31536000'; }
+      },
+      getScores(){
+        try{
+          const raw = localStorage.getItem(scoresKey);
+          return raw? JSON.parse(raw) : [];
+        }catch(e){
+          const m = document.cookie.match(/(?:^|; )shroomScores=([^;]*)/);
+          try{ return m? JSON.parse(decodeURIComponent(m[1])) : [] } catch{ return [] }
+        }
+      },
+      setScores(arr){
+        try{ localStorage.setItem(scoresKey, JSON.stringify(arr)); }
+        catch(e){ document.cookie = 'shroomScores=' + encodeURIComponent(JSON.stringify(arr)) + ';path=/;max-age=31536000'; }
+      }
+    };
+
+    // --- Mushroom generator (spots constrained to cap ellipse) ---
+    function mushroomSVG(options={}){
+      const {cap = '#d94b4b', stem = '#f6e8c7', spots='#fff', seed = Math.random()} = options;
+      const rng = mulberry32(Math.floor(seed*1e9));
+      const desired = 8; // spots target
+      let circles = [];
+      let attempts = 0;
+      while(circles.length < desired && attempts < 300){
+        attempts++;
+        const x = 50 + (rng()*30-15);
+        const y = 46 + (rng()*20-10);
+        const r = 1.5 + rng()*2.0;
+        // inside cap constraint: approx ellipse centered at (50,50), rx=28, ry=12
+        const dx = x-50, dy = y-50;
+        if((dx*dx)/(28*28) + (dy*dy)/(12*12) > 1) continue; // outside cap
+        // spacing constraint
+        if(circles.some(c=>{const ddx=c.x-x, ddy=c.y-y; return Math.hypot(ddx,ddy) < (c.r + r + 3)})) continue;
+        circles.push({x,y,r});
+      }
+      const dots = circles.map(c=>`<circle cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="${c.r.toFixed(1)}" fill="${spots}" opacity=".95"/>`).join('');
+      const svg = `<?xml version='1.0' encoding='UTF-8'?>
+      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+        <defs><filter id='shadow' x='-50%' y='-50%' width='200%' height='200%'><feDropShadow dx='0' dy='2' stdDeviation='2' flood-color='rgba(0,0,0,.35)'/></filter></defs>
+        <ellipse cx='50' cy='78' rx='22' ry='6' fill='rgba(0,0,0,.25)'/>
+        <g filter='url(#shadow)'><path d='M44 78c-3-16 2-26 6-26s9 10 6 26h-12z' fill='${stem}'/><rect x='42' y='72' width='16' height='6' rx='3' fill='${stem}'/></g>
+        <g filter='url(#shadow)'><path d='M22 50c8-18 48-18 56 0-10 8-26 10-28 10S32 58 22 50z' fill='${cap}'/>${dots}</g>
+      </svg>`;
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+    }
+
+    function mulberry32(a){return function(){var t=a+=0x6D2B79F5;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return ((t^t>>>14)>>>0)/4294967296}}
+
+    const palettes=[{cap:'#e45757'},{cap:'#d46ddb'},{cap:'#f29f3f'},{cap:'#5fb36a'},{cap:'#53a0db'},{cap:'#b6763b'},{cap:'#ff6fae'},{cap:'#a3d35a'}];
+
+    const countEl=document.getElementById('count');
+    const btn=document.getElementById('shroomBtn');
+    const resetBtn=document.getElementById('resetBtn');
+    const glow=document.querySelector('.glow');
+    for(let i=0;i<24;i++){const s=document.createElement('span');s.style.left=Math.random()*100+'vw';s.style.bottom=(-10+Math.random()*40)+'vh';s.style.animationDuration=(12+Math.random()*18)+'s';s.style.animationDelay=(-Math.random()*30)+'s';s.style.opacity=(0.4+Math.random()*0.6).toFixed(2);glow.appendChild(s);}
+
+    // --- State ---
+    let count=Math.max(0,storage.get()|0); let lastIndex=-1;
+
+    function setCount(n){count=Math.max(0,n|0);countEl.textContent=count;storage.set(count);}    
+
+    function newMushroom(){
+      let idx; do{idx=(Math.random()*palettes.length)|0}while(palettes.length>1&&idx===lastIndex);
+      lastIndex=idx; const seed=Math.random(); const uri=mushroomSVG({cap:palettes[idx].cap,seed});
+      btn.style.setProperty('--mushroom-img',`url("${uri}")`);
+    }
+
+    function getLeaderboard(){
+      const list = storage.getScores();
+      return Array.isArray(list)? list : [];
+    }
+    function saveLeaderboard(entries){ storage.setScores(entries); }
+
+    function qualifies(score){
+      const lb=getLeaderboard();
+      if(lb.length<5) return score>0; // any positive score qualifies if board not full
+      const min = Math.min(...lb.map(e=>e.score));
+      return score>min; // strictly greater than lowest
+    }
+
+    function addToLeaderboard(name, score){
+      const lb=getLeaderboard();
+      const entry={name:String(name||'Anonymous Forager').slice(0,24).trim()||'Anonymous Forager', score: Number(score)||0, ts: Date.now()};
+      lb.push(entry);
+      lb.sort((a,b)=> b.score===a.score ? a.ts-b.ts : b.score-a.score);
+      const top5 = lb.slice(0,5);
+      saveLeaderboard(top5);
+      renderLeaderboard();
+    }
+
+    function renderLeaderboard(){
+      const lbEl=document.getElementById('lb');
+      const lb=getLeaderboard();
+      if(!lb.length){ lbEl.innerHTML = `<li class="lb-item lb-empty"><span class="lb-name">No scores yet</span><span class="lb-score">—</span></li>`; return; }
+      lbEl.innerHTML = lb.map((e,i)=>
+        `<li class="lb-item"><span class="lb-name">${i+1}. ${escapeHTML(e.name)}</span><span class="lb-score">${e.score}</span></li>`
+      ).join('');
+    }
+
+    function escapeHTML(s){ return String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c])); }
+
+    // --- Init ---
+    setCount(count); newMushroom(); renderLeaderboard();
+
+    // --- Interactions ---
+    btn.addEventListener('click',()=>{
+      setCount(count + 1);
+      newMushroom();
+      btn.animate([{transform:'scale(1)'},{transform:'scale(1.05)'},{transform:'scale(1)'}],{duration:120,easing:'ease-out'});
+    });
+
+    resetBtn.addEventListener('click',()=>{
+      const currentScore = count;
+      const boardWasFull = getLeaderboard().length >= 5;
+      if(qualifies(currentScore)){
+        const name = prompt("New High Score! Enter your forager name:", "");
+        addToLeaderboard(name, currentScore);
+      } else if(boardWasFull) {
+        // optional: a subtle nudge when the board is full and you didn't qualify
+        // alert('Score did not reach top 5. Keep foraging!');
+      }
+      setCount(0);
+      newMushroom();
+    });
+
+    // Keyboard accessibility
+    btn.addEventListener('keydown',(e)=>{if(e.key===' '|| e.key==='Enter'){e.preventDefault();btn.click();}});
+  </script>
+</body>
+</html>
