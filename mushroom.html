@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
   <title>Mushroom Counter 🌲🍄</title>
   <style>
-    :root{
+    :root {
       --bg1:#0b2a1f;
       --bg2:#163b2c;
       --leaf:#5aa36a;
@@ -15,9 +15,10 @@
       --panel:#1a2b22;
       --modalBg:#0f1f19;
     }
-    html,body{height:100%}
-    body{
-      margin:0; padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    html,body { height:100% }
+    body {
+      margin:0;
+      padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
       color:var(--text);
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
@@ -29,81 +30,138 @@
       place-items:center;
       overflow:hidden;
     }
-    body::before, body::after{content:"";position:fixed;inset:0;pointer-events:none;opacity:.25;background:repeating-linear-gradient(to right,transparent 0 120px,rgba(0,0,0,.08) 120px 130px,transparent 130px 260px,rgba(0,0,0,.05) 260px 275px);mask:linear-gradient(to top, transparent, #000 30%, #000);}    
-    .card{width:min(780px,92vw);padding:24px 20px 28px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));box-shadow:0 30px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(6px);position:relative;}
-    @media (min-width:480px){.card{padding:28px 28px 36px;border-radius:28px}}
-    .vines{position:absolute;inset:-20px;pointer-events:none;filter:drop-shadow(0 6px 3px rgba(0,0,0,.25));background:radial-gradient(12px 12px at 10% 6%,var(--leaf) 20%,transparent 22%),radial-gradient(12px 12px at 18% 4%,var(--leaf) 20%,transparent 22%),radial-gradient(12px 12px at 81% 7%,var(--leaf) 20%,transparent 22%),radial-gradient(12px 12px at 88% 9%,var(--leaf) 20%,transparent 22%);mask:radial-gradient(400px 60px at 50% -30px,#000 30%,transparent 60%)}
-    h1{margin:0 0 6px;text-align:center;font-weight:800;letter-spacing:.3px;font-size:clamp(20px,5vw,28px)}
-    .sub{opacity:.8;text-align:center;margin:0 0 18px;font-size:clamp(12px,3.6vw,14px)}
-    .counter-wrap{display:grid;place-items:center;gap:14px;margin:8px auto 22px}
-    .count{font-size:clamp(36px,10vw,64px);font-weight:900;text-shadow:0 2px 0 rgba(0,0,0,.35)}
-    .shroom-btn{width:min(64vmin,360px);height:min(64vmin,360px);border-radius:50%;border:0;cursor:pointer;position:relative;display:grid;place-items:center;background:#1b2e24;box-shadow:0 12px 30px rgba(0,0,0,.45),inset 0 0 0 3px rgba(255,255,255,.08),0 0 0 10px var(--btnRing),0 0 0 18px rgba(0,0,0,.20);background-image:var(--mushroom-img);background-position:center;background-repeat:no-repeat;background-size:68% 68%;transition:transform .08s ease;outline-offset:6px;touch-action:manipulation}
-    .shroom-btn:active{transform:scale(.98)}
-    .shroom-btn .hint{position:absolute;bottom:10px;font-weight:700;opacity:.9;background:rgba(0,0,0,.25);padding:6px 10px;border-radius:999px;font-size:14px}
-    .controls{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-    .reset{appearance:none;border:0;cursor:pointer;padding:12px 16px;border-radius:999px;font-weight:700;min-width:44px;min-height:44px;background:linear-gradient(180deg,#2a5d44,#204c37);color:var(--text);box-shadow:0 8px 16px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.12);touch-action:manipulation}
-    .reset:active{transform:translateY(1px)}
+    body::before, body::after {
+      content:"";
+      position:fixed; inset:0; pointer-events:none; opacity:.25;
+      background:
+        repeating-linear-gradient(to right,
+          transparent 0 120px,
+          rgba(0,0,0,.08) 120px 130px,
+          transparent 130px 260px,
+          rgba(0,0,0,.05) 260px 275px);
+      mask:linear-gradient(to top, transparent, #000 30%, #000);
+    }
+    .card {
+      width:min(780px,92vw);
+      padding:24px 20px 28px;
+      border-radius:24px;
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));
+      box-shadow:0 30px 60px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08);
+      backdrop-filter:blur(6px);
+      position:relative;
+    }
+    h1 { margin:0 0 6px; text-align:center; font-weight:800; font-size:clamp(20px,5vw,28px) }
+    .sub { opacity:.8; text-align:center; margin:0 0 18px; font-size:clamp(12px,3.6vw,14px) }
+    .counter-wrap { display:grid; place-items:center; gap:14px; margin:8px auto 22px }
+    .count { font-size:clamp(36px,10vw,64px); font-weight:900; text-shadow:0 2px 0 rgba(0,0,0,.35) }
 
-    .leaderboard{position:fixed;top:env(safe-area-inset-top,0) + 12px;right:12px;width:min(260px,46vw);background:var(--panel);border-radius:16px;padding:10px 12px;box-shadow:0 12px 28px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08)}
-    @media (max-width:420px){.leaderboard{width:54vw;right:8px;top:8px;padding:8px 10px}}
-    .leaderboard h2{font-size:12px;margin:0 0 6px;letter-spacing:.4px;opacity:.9}
-    .lb-list{list-style:none;padding:0;margin:0;display:grid;gap:4px}
-    .lb-item{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.04);padding:6px 8px;border-radius:10px}
-    .lb-name{max-width:65%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px}
-    .lb-score{font-weight:800;font-size:12px}
-    .lb-empty{opacity:.7}
+    .shroom-btn {
+      width:min(64vmin,360px); height:min(64vmin,360px);
+      border-radius:50%; border:0; cursor:pointer; position:relative;
+      display:grid; place-items:center;
+      background:#1b2e24;
+      box-shadow:0 12px 30px rgba(0,0,0,.45),
+        inset 0 0 0 3px rgba(255,255,255,.08),
+        0 0 0 10px var(--btnRing),
+        0 0 0 18px rgba(0,0,0,.20);
+      transition: transform .08s ease;
+      outline-offset:6px;
+      touch-action: manipulation;
+      overflow:hidden;
+    }
+    /* ONLY this inner element scales, so the hint stays anchored */
+    .mushroom-inner {
+      width:100%; height:100%;
+      border-radius:50%;
+      background-image: var(--mushroom-img);
+      background-position:center;
+      background-repeat:no-repeat;
+      background-size:68% 68%;
+    }
+    .shroom-btn:active { transform:scale(.98) }
+
+    .shroom-btn .hint {
+      position:absolute; bottom:10px; left:50%;
+      transform:translateX(-50%);
+      font-weight:700; opacity:.9;
+      background:rgba(0,0,0,.25);
+      padding:6px 10px; border-radius:999px;
+      font-size:14px;
+      pointer-events:none;
+    }
+
+    .controls { display:flex; gap:12px; justify-content:center; flex-wrap:wrap }
+    .reset {
+      appearance:none; border:0; cursor:pointer;
+      padding:12px 16px; border-radius:999px; font-weight:700;
+      background:linear-gradient(180deg,#2a5d44,#204c37);
+      color:var(--text);
+      box-shadow:0 8px 16px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.12);
+      touch-action:manipulation;
+    }
+
+    /* Leaderboard */
+    .leaderboard {
+      position:fixed; top:12px; right:12px;
+      width:min(260px,46vw);
+      background:var(--panel);
+      border-radius:16px; padding:10px 12px;
+      box-shadow:0 12px 28px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .leaderboard h2 { font-size:12px; margin:0 0 6px }
+    .lb-list { list-style:none; padding:0; margin:0; display:grid; gap:4px }
+    .lb-item { display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,.04); padding:6px 8px; border-radius:10px }
+    .lb-name { max-width:65%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:12px }
+    .lb-score { font-weight:800; font-size:12px }
+    .lb-empty { opacity:.7 }
 
     /* Modal */
     .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:24px;z-index:999}
-    .modal{width:min(520px,92vw);background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.1);border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.6);backdrop-filter: blur(8px);padding:18px}
+    .modal{width:min(520px,92vw);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.1);border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.6);backdrop-filter:blur(8px);padding:18px}
     .modal header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-    .modal header .icon{font-size:20px}
     .modal h3{margin:0;font-size:18px}
     .modal p{margin:6px 0 12px;opacity:.9;font-size:14px}
     .modal .field{display:flex;gap:10px}
-    .modal input{flex:1; padding:12px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:var(--modalBg);color:var(--text);font-size:16px}
+    .modal input{flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:var(--modalBg);color:var(--text);font-size:16px}
     .modal .actions{margin-top:14px;display:flex;gap:10px;justify-content:flex-end}
-    .btn{appearance:none;border:0;border-radius:999px;padding:10px 14px;font-weight:700;color:var(--text);cursor:pointer;min-height:40px}
-    .btn.primary{background:linear-gradient(180deg,#2a5d44,#204c37);box-shadow:0 8px 16px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.12)}
+    .btn{border:0;border-radius:999px;padding:10px 14px;font-weight:700;color:var(--text);cursor:pointer;min-height:40px}
+    .btn.primary{background:linear-gradient(180deg,#2a5d44,#204c37)}
     .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.18)}
-
-    .glow{position:fixed;inset:0;pointer-events:none}
-    .glow span{position:absolute;width:4px;height:4px;border-radius:50%;background:var(--accent);filter:blur(.5px);opacity:.8;animation:floaty linear infinite}
-    @keyframes floaty{from{transform:translateY(0)}to{transform:translateY(-120vh)}}
-    @media (prefers-reduced-motion:reduce){.shroom-btn{transition:none}.glow{display:none}}
-    @media (max-width:420px){.glow span{display:none}}
   </style>
 </head>
 <body>
-  <!-- Leaderboard -->
   <aside class="leaderboard" aria-live="polite" aria-label="Top forage scores">
     <h2>🏆 Top Foragers</h2>
     <ol id="lb" class="lb-list"></ol>
   </aside>
 
   <div class="card" role="region" aria-label="Mushroom counter">
-    <div class="vines" aria-hidden="true"></div>
     <h1>🍄 Mushroom Counter</h1>
     <p class="sub">Click the mushroom to add 1. Your total is saved for next time.</p>
     <section class="counter-wrap">
       <div id="count" class="count" aria-live="polite">0</div>
-      <button id="shroomBtn" class="shroom-btn" aria-label="Add one to counter"><span class="hint">+1</span></button>
+
+      <button id="shroomBtn" class="shroom-btn" aria-label="Add one to counter">
+        <div class="mushroom-inner" id="mushroomInner"></div>
+        <span class="hint">+1</span>
+      </button>
     </section>
+
     <div class="controls">
       <button id="resetBtn" class="reset" aria-label="Reset counter to zero or save a high score">Reset counter</button>
     </div>
   </div>
 
-  <!-- Themed modal for high-score name -->
-  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+  <!-- Modal -->
+  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal">
       <header>
-        <span class="icon">🍄</span>
-        <h3 id="modalTitle">New High Score!</h3>
+        <span>🍄</span><h3>New High Score!</h3>
       </header>
       <p>Enter the name of your forage. This will appear on the leaderboard.</p>
       <div class="field">
-        <input id="nameInput" type="text" placeholder="e.g. Moonlit Morels" maxlength="24" />
+        <input id="nameInput" type="text" maxlength="24" placeholder="e.g. Moonlit Morels">
       </div>
       <div class="actions">
         <button id="skipBtn" class="btn ghost">Skip</button>
@@ -112,117 +170,141 @@
     </div>
   </div>
 
-  <div class="glow" aria-hidden="true"></div>
-
   <script>
-    // Keep pinch-zoom prevention for gestures
+    // Prevent pinch zoom (keeps iOS stable)
     document.addEventListener('gesturestart', e=>e.preventDefault(), {passive:false});
 
-    // Storage helpers
     const storageKey='shroomCounter:v1';
     const scoresKey='shroomHighscores:v1';
+
     const storage={
-      get(){try{const v=localStorage.getItem(storageKey);return v?Number(v):0}catch(e){const m=document.cookie.match(/(?:^|; )shroomCount=([^;]*)/);return m?Number(decodeURIComponent(m[1])):0}},
-      set(n){try{localStorage.setItem(storageKey,String(n))}catch(e){document.cookie='shroomCount='+encodeURIComponent(String(n))+';path=/;max-age=31536000'}},
-      getScores(){try{const raw=localStorage.getItem(scoresKey);return raw?JSON.parse(raw):[]}catch(e){const m=document.cookie.match(/(?:^|; )shroomScores=([^;]*)/);try{return m?JSON.parse(decodeURIComponent(m[1])):[]}catch{return[]}}},
-      setScores(arr){try{localStorage.setItem(scoresKey,JSON.stringify(arr))}catch(e){document.cookie='shroomScores='+encodeURIComponent(JSON.stringify(arr))+';path=/;max-age=31536000'}}
+      get(){try{const v=localStorage.getItem(storageKey);return v?Number(v):0}catch(e){return 0}},
+      set(n){try{localStorage.setItem(storageKey,String(n))}catch(e){}},
+      getScores(){try{const raw=localStorage.getItem(scoresKey);return raw?JSON.parse(raw):[]}catch(e){return[]}},
+      setScores(arr){try{localStorage.setItem(scoresKey,JSON.stringify(arr))}catch(e){}}
     };
 
-    // Mushroom generator (spots constrained to cap ellipse)
-    function mushroomSVG(options={}){
-      const{cap='#d94b4b',stem='#f6e8c7',spots='#fff',seed=Math.random()}=options;
+    // Mushroom SVG generator with constrained/spacing dots
+    function mushroomSVG({cap='#d94b4b',stem='#f6e8c7',spots='#fff',seed=Math.random()}={}) {
       const rng=mulberry32(Math.floor(seed*1e9));
-      const desired=8; let circles=[]; let attempts=0;
-      while(circles.length<desired&&attempts<300){attempts++; const x=50+(rng()*30-15); const y=46+(rng()*20-10); const r=1.5+rng()*2.0; const dx=x-50,dy=y-50; if((dx*dx)/(28*28)+(dy*dy)/(12*12)>1) continue; if(circles.some(c=>{const ddx=c.x-x,ddy=c.y-y; return Math.hypot(ddx,ddy)<(c.r+r+3)})) continue; circles.push({x,y,r}); }
+      const circles=[]; let attempts=0;
+      while(circles.length<8 && attempts<300){
+        attempts++;
+        const x=50+(rng()*30-15);
+        const y=46+(rng()*20-10);
+        const r=1.5+rng()*2;
+        const dx=x-50, dy=y-50;
+        // Keep inside the cap: ellipse approx centered at (50,50), rx=28, ry=12
+        if((dx*dx)/(28*28)+(dy*dy)/(12*12)>1) continue;
+        // Avoid overlaps (rare)
+        if(circles.some(c=>Math.hypot(c.x-x,c.y-y)<(c.r+r+3))) continue;
+        circles.push({x,y,r});
+      }
       const dots=circles.map(c=>`<circle cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="${c.r.toFixed(1)}" fill="${spots}" opacity=".95"/>`).join('');
-      const svg=`<?xml version='1.0' encoding='UTF-8'?><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><filter id='shadow' x='-50%' y='-50%' width='200%' height='200%'><feDropShadow dx='0' dy='2' stdDeviation='2' flood-color='rgba(0,0,0,.35)'/></filter></defs><ellipse cx='50' cy='78' rx='22' ry='6' fill='rgba(0,0,0,.25)'/><g filter='url(#shadow)'><path d='M44 78c-3-16 2-26 6-26s9 10 6 26h-12z' fill='${stem}'/><rect x='42' y='72' width='16' height='6' rx='3' fill='${stem}'/></g><g filter='url(#shadow)'><path d='M22 50c8-18 48-18 56 0-10 8-26 10-28 10S32 58 22 50z' fill='${cap}'/>${dots}</g></svg>`;
+      const svg=`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+        <ellipse cx='50' cy='78' rx='22' ry='6' fill='rgba(0,0,0,.25)'/>
+        <path d='M44 78c-3-16 2-26 6-26s9 10 6 26h-12z' fill='${stem}'/>
+        <path d='M22 50c8-18 48-18 56 0-10 8-26 10-28 10S32 58 22 50z' fill='${cap}'/>
+        ${dots}
+      </svg>`;
       return 'data:image/svg+xml;utf8,'+encodeURIComponent(svg);
     }
-
     function mulberry32(a){return function(){var t=a+=0x6D2B79F5;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
 
     const palettes=[{cap:'#e45757'},{cap:'#d46ddb'},{cap:'#f29f3f'},{cap:'#5fb36a'},{cap:'#53a0db'},{cap:'#b6763b'},{cap:'#ff6fae'},{cap:'#a3d35a'}];
 
     const countEl=document.getElementById('count');
     const btn=document.getElementById('shroomBtn');
+    const inner=document.getElementById('mushroomInner');
     const resetBtn=document.getElementById('resetBtn');
 
-    // Fireflies (disabled on tiny screens via CSS)
-    const glow=document.querySelector('.glow');
-    const fireflyCount=matchMedia('(max-width: 420px)').matches?0:24;
-    for(let i=0;i<fireflyCount;i++){const s=document.createElement('span');s.style.left=Math.random()*100+'vw';s.style.bottom=(-10+Math.random()*40)+'vh';s.style.animationDuration=(12+Math.random()*18)+'s';s.style.animationDelay=(-Math.random()*30)+'s';s.style.opacity=(0.4+Math.random()*0.6).toFixed(2);glow.appendChild(s)}
-
-    // State
-    let count=Math.max(0,storage.get()|0); let lastIndex=-1;
-    function setCount(n){count=Math.max(0,n|0);countEl.textContent=count;storage.set(count)}
-    function newMushroom(){let idx;do{idx=(Math.random()*palettes.length)|0}while(palettes.length>1&&idx===lastIndex);lastIndex=idx; const seed=Math.random(); const uri=mushroomSVG({cap:palettes[idx].cap,seed}); btn.style.setProperty('--mushroom-img',`url("${uri}")`)}
-
-    // Leaderboard helpers
-    function getLeaderboard(){const list=storage.getScores();return Array.isArray(list)?list:[]}
-    function saveLeaderboard(entries){storage.setScores(entries)}
-    function qualifies(score){const lb=getLeaderboard(); if(lb.length<5) return score>0; const min=Math.min(...lb.map(e=>e.score)); return score>min}
-    function addToLeaderboard(name,score){const lb=getLeaderboard(); const entry={name:String(name||'Anonymous Forager').slice(0,24).trim()||'Anonymous Forager', score:Number(score)||0, ts:Date.now()}; lb.push(entry); lb.sort((a,b)=> b.score===a.score ? a.ts-b.ts : b.score-a.score); saveLeaderboard(lb.slice(0,5)); renderLeaderboard(); }
-    function renderLeaderboard(){const lbEl=document.getElementById('lb'); const lb=getLeaderboard(); if(!lb.length){lbEl.innerHTML=`<li class="lb-item lb-empty"><span class="lb-name">No scores yet</span><span class="lb-score">—</span></li>`;return} lbEl.innerHTML=lb.map((e,i)=>`<li class="lb-item"><span class="lb-name">${i+1}. ${escapeHTML(e.name)}</span><span class="lb-score">${e.score}</span></li>`).join(''); }
-    function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
-
-    // Modal logic
-    const modalBackdrop = document.getElementById('modalBackdrop');
-    const nameInput = document.getElementById('nameInput');
-    const saveBtn = document.getElementById('saveBtn');
-    const skipBtn = document.getElementById('skipBtn');
-    let pendingScore = null;
+    // Modal elements
+    const modalBackdrop=document.getElementById('modalBackdrop');
+    const nameInput=document.getElementById('nameInput');
+    const saveBtn=document.getElementById('saveBtn');
+    const skipBtn=document.getElementById('skipBtn');
+    let pendingScore=null;
 
     function openModal(score){
-      pendingScore = score;
-      modalBackdrop.style.display = 'flex';
+      pendingScore=score;
+      modalBackdrop.style.display='flex';
       modalBackdrop.removeAttribute('aria-hidden');
-      // small delay to allow paint before focusing input
-      setTimeout(()=>{ nameInput.focus(); nameInput.select(); }, 10);
-      // trap focus basic
-      document.addEventListener('keydown', onModalKey);
+      setTimeout(()=>{nameInput.focus(); nameInput.select();},10);
     }
     function closeModal(){
-      modalBackdrop.style.display = 'none';
+      modalBackdrop.style.display='none';
       modalBackdrop.setAttribute('aria-hidden','true');
-      document.removeEventListener('keydown', onModalKey);
-    }
-    function onModalKey(e){
-      if(e.key === 'Escape'){ saveAndReset(''); }
-      if(e.key === 'Enter'){ saveAndReset(nameInput.value); }
     }
     function saveAndReset(name){
-      addToLeaderboard(name, pendingScore);
-      pendingScore = null;
+      addToLeaderboard(name,pendingScore);
+      pendingScore=null;
       closeModal();
-      setCount(0);
-      newMushroom();
+      setCount(0); newMushroom();
+    }
+    saveBtn.onclick=()=>saveAndReset(nameInput.value);
+    skipBtn.onclick=()=>saveAndReset('');
+    modalBackdrop.addEventListener('click', (e)=>{ if(e.target===modalBackdrop) saveAndReset(''); });
+
+    // State
+    let count=Math.max(0,storage.get()|0);
+    let lastIndex=-1;
+
+    function setCount(n){count=Math.max(0,n|0);countEl.textContent=count;storage.set(count)}
+
+    function newMushroom(){
+      let idx; do{idx=(Math.random()*palettes.length)|0}while(palettes.length>1&&idx===lastIndex);
+      lastIndex=idx;
+      const uri=mushroomSVG({cap:palettes[idx].cap,seed:Math.random()});
+      inner.style.setProperty('--mushroom-img',`url("${uri}")`);
     }
 
-    saveBtn.addEventListener('click', ()=> saveAndReset(nameInput.value));
-    skipBtn.addEventListener('click', ()=> saveAndReset(''));
-    modalBackdrop.addEventListener('click', (e)=>{ if(e.target === modalBackdrop) saveAndReset(''); });
+    function getLeaderboard(){return storage.getScores()}
+    function saveLeaderboard(arr){storage.setScores(arr)}
+    function qualifies(score){
+      const lb=getLeaderboard();
+      if(lb.length<5) return score>0;
+      return score>Math.min(...lb.map(e=>e.score));
+    }
+    function addToLeaderboard(name,score){
+      const lb=getLeaderboard();
+      lb.push({name:(name||'Anonymous Forager').slice(0,24), score:Number(score)||0, ts:Date.now()});
+      lb.sort((a,b)=> b.score===a.score ? a.ts-b.ts : b.score-a.score);
+      saveLeaderboard(lb.slice(0,5));
+      renderLeaderboard();
+    }
+    function renderLeaderboard(){
+      const lbEl=document.getElementById('lb');
+      const lb=getLeaderboard();
+      if(!lb.length){lbEl.innerHTML='<li class="lb-item lb-empty"><span class="lb-name">No scores yet</span><span class="lb-score">—</span></li>';return;}
+      lbEl.innerHTML=lb.map((e,i)=>`<li class="lb-item"><span class="lb-name">${i+1}. ${escapeHTML(e.name)}</span><span class="lb-score">${e.score}</span></li>`).join('');
+    }
+    function escapeHTML(s){return String(s).replace(/[&<>\"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
 
     // Init
     setCount(count); newMushroom(); renderLeaderboard();
 
-    // Interactions — use Pointer Events for reliable touch
-    function handleIncrement(){ setCount(count+1); newMushroom(); btn.animate([{transform:'scale(1)'},{transform:'scale(1.05)'},{transform:'scale(1)'}],{duration:120,easing:'ease-out'}); }
-    btn.addEventListener('pointerup', (e)=>{ e.preventDefault(); handleIncrement(); }, {passive:false});
-    btn.addEventListener('click', ()=>{ handleIncrement(); }); // fallback
+    // Increment handler — animate ONLY the inner mushroom, not the badge
+    function handleIncrement(){
+      setCount(count+1);
+      newMushroom();
+      inner.animate(
+        [{transform:'scale(1)'},{transform:'scale(1.05)'},{transform:'scale(1)'}],
+        {duration:120, easing:'ease-out'}
+      );
+    }
+    if(window.PointerEvent){
+      btn.addEventListener('pointerup', e=>{ e.preventDefault(); handleIncrement(); }, {passive:false});
+    } else {
+      btn.addEventListener('click', ()=>handleIncrement());
+    }
 
-    resetBtn.addEventListener('click', ()=>{
-      const currentScore = count;
-      const boardWasFull = getLeaderboard().length >= 5;
-      if(qualifies(currentScore)){
-        openModal(currentScore);
-      } else {
-        if(boardWasFull){ /* optional: could toast 'Did not reach top 5' */ }
-        setCount(0); newMushroom();
-      }
-    });
+    resetBtn.onclick=()=>{
+      if(qualifies(count)){ openModal(count); }
+      else { setCount(0); newMushroom(); }
+    };
 
     // Keyboard accessibility
-    btn.addEventListener('keydown',(e)=>{if(e.key===' '|| e.key==='Enter'){e.preventDefault();handleIncrement();}});
+    btn.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();handleIncrement();}});
   </script>
 </body>
 </html>
